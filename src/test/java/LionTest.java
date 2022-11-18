@@ -1,34 +1,63 @@
 import com.example.Feline;
 import com.example.Lion;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.List;
 
 @RunWith(Parameterized.class)
 public class LionTest {
-    static Feline feline;
-    String sex;
-    boolean hasName;
 
-    public LionTest (Feline feline, String sex, boolean hasName) {
-        LionTest.feline = feline;
+    @Before
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    String sex;
+    boolean hasMane;
+
+    @Mock
+    Feline feline;
+
+    public LionTest (String sex, boolean hasMane) {
         this.sex = sex;
-        this.hasName = hasName;
+        this.hasMane = hasMane;
     }
 
     @Parameterized.Parameters
     public static Object[][] getData(){
         return new Object[][] {
-                {feline, "Самец", true},
-                {feline, "Самка", false}
+                {"Самец", true},
+                {"Самка", false}
         };
     }
 
     @Test
-    public void maleHasNameButFemaleHasNoName() throws Exception {
+    public void maleHasManeButFemaleHasNoMane() throws Exception {
         Lion lion = new Lion(sex, feline);
-        Assert.assertEquals("Используйте допустимые значения пола животного - самец или самка", hasName, lion.doesHaveMane());
+        Assert.assertEquals("Используйте допустимые значения пола животного - самец или самка", hasMane, lion.doesHaveMane());
     }
+
+    @Test
+    public void lionHasCorrectNumberOfKittens() throws Exception {
+        Lion lion = new Lion(sex, feline);
+        Mockito.when(lion.getKittens()).thenReturn(9);
+        Assert.assertEquals(9, lion.getKittens());
+    }
+
+    @Test
+    public void lionFeedsLikePredator() throws Exception {
+        Lion lion = new Lion(sex, feline);
+        List<String> expected = List.of("Животные", "Птицы", "Рыба");
+        Mockito.when(lion.getFood()).thenReturn(expected);
+        Assert.assertEquals("Лев питается как хищник", expected, lion.getFood());
+    }
+
 
 }
