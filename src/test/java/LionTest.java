@@ -47,16 +47,16 @@ public class LionTest {
     @Test
     public void lionHasCorrectNumberOfKittens() throws Exception {
         Lion lion = new Lion(sex, feline);
-        Mockito.when(lion.getKittens()).thenReturn(9);
-        Assert.assertEquals(9, lion.getKittens());
+        Mockito.when(feline.getKittens()).thenReturn(1);
+        Assert.assertEquals(1, lion.getKittens());
     }
 
     @Test
     public void lionFeedsLikePredator() throws Exception {
         Lion lion = new Lion(sex, feline);
         List<String> expected = List.of("Животные", "Птицы", "Рыба");
-        Mockito.when(lion.getFood()).thenReturn(expected);
-        Assert.assertEquals("Лев питается как хищник", expected, lion.getFood());
+        Mockito.when(feline.getFood("Хищник")).thenReturn(expected);
+        Assert.assertEquals("Лев питается не как хищник", expected, lion.getFood());
     }
 
 
